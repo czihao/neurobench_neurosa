@@ -32,12 +32,14 @@ if __name__ == '__main__':
 		print("Problem: ", num_vertices, density, seed, c_optimal)
 		# visualize_matrix(qubo_matrix)
 		neurosa = Neurosa(qubo_matrix)
+		# if num_vertices >= 1000:
+		# 	c_optimal -= 1
 		neurosa.run(c_optimal, False)
 		print(f"neurosa: {neurosa.best_energy}")
-		res_list.append([num_vertices, density, seed, c_optimal, neurosa.best_energy, neurosa.iter, neurosa.runtime])
+		res_list.append([num_vertices, density, seed, c_optimal, neurosa.best_energy, neurosa.iter2sota, neurosa.t2sota, neurosa.t2solu])
 		
 		# configure problem, deploy and solve
 		# qubo_matrix is an (N x N) symmetric np array with -1 on diagonal and 4 at edges.
 	
-	write_res("./data/neurosa_res.csv", res_list)
+	write_res("./data/neurosa_res_optimal5.csv", res_list)
 	

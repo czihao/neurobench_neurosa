@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import csv
 
-header = ['num_vertices', 'density', 'random_seed', 'c_optimal', 'neurosa_res', 'iter2solution', 't2solution']
+header = ['num_vertices', 'density', 'random_seed', 'c_optimal', 'neurosa_res', 'iter2sota', 'iter2solution', 't2sota', 't2solution']
 
 def visualize_matrix(H):
     plt.imshow(H, cmap='Greys', interpolation='none')

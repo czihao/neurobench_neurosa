@@ -23,7 +23,10 @@ class Neurosa:
         self.iter = 0
         self.thld_iter = 0
         self.thld = 1
-        self.runtime = 0
+        self.t2sota = 0
+        self.iter2sota = 0
+        self.t2solu = 0
+        self.iter2solu = 0
         
         self.v = (self.s_p - self.s_n)
         # self.curr_energy = np.sum(np.sum(np.multiply(Q, 1 - np.outer(self.v, self.v)))) / 4
@@ -37,21 +40,25 @@ class Neurosa:
             self.iter += 1
             self.thld += self.thld_delta
 
-            if self.best_energy <= optimal:
-                break
+            if self.best_energy == optimal:
+                self.iter2sota = self.iter
+                self.t2sota = (time_ns() - start)/1e6
+
             if debug and self.iter > 200:
                 break
 
             if self.iter > 0 and self.iter % 1e5 == 0:
                 print(f'#spikes:{self.num_spikes}, best: {self.best_energy}')
-        self.runtime = (time_ns() - start)/1e6
+        self.iter2solu = self.iter
+        self.t2solu = (time_ns() - start)/1e6
+
     def update_neuron(self, p, debug):
         s_p_p = self.s_p[p].item()
         s_n_p = self.s_n[p].item()
         vmem_p = self.vmem[p].item()
         
         noisethld = 2.5e4 * math.log(0.99 * random.random() + 1e-6) / (self.thld_max * math.log(1 + self.thld / self.thld_max))
-        spike = 1 if (noisethld * (s_p_p - s_n_p) - vmem_p) * (s_p_p - s_n_p) < 0 else 0
+        spike = 1 if (noisethld * (s_p_p - s_n_p) - vmem_p) * (s_p_p - s_n_p) + self.Q[p,p] < 0 else 0
         
         if spike:
             new_ds_p_p = s_n_p > 0
