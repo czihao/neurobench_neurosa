@@ -58,6 +58,7 @@ class Neurosa:
         vmem_p = self.vmem[p].item()
         
         noisethld = 2.5e4 * math.log(0.99 * random.random() + 1e-6) / (self.thld_max * math.log(1 + self.thld / self.thld_max))
+        # NEW
         spike = 1 if (noisethld * (s_p_p - s_n_p) - vmem_p) * (s_p_p - s_n_p) + self.Q[p,p] < 0 else 0
         
         if spike:
